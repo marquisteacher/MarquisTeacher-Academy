@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MarquisTeacher Academy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="nav-logo">Marquis<span>Teacher</span> Academy</div>
+  <ul class="nav-links">
+    <li><a href="#quiz">Test Your English</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">Certified English Language Instruction</div>
+    <h1>Master<br><em>English,</em><br>Unlock Worlds.</h1>
+    <p class="hero-sub">Personalised English instruction designed to elevate your language ability — from confident basics to exceptional fluency. Discover where you stand today.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollToQuiz()">Test My English Level</button>
+      <a href="#contact" class="btn-secondary" style="text-decoration:none;display:inline-flex;align-items:center;">Free Consultation</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="cefr-wheel">
+      <div class="cefr-ring"></div>
+      <div class="cefr-level lvl-a1">A1<span>Beginner</span></div>
+      <div class="cefr-level lvl-a2">A2<span>Elementary</span></div>
+      <div class="cefr-level lvl-b1">B1<span>Intermediate</span></div>
+      <div class="cefr-level lvl-b2">B2<span>Upper-Int.</span></div>
+      <div class="cefr-level lvl-c1">C1<span>Advanced</span></div>
+      <div class="cefr-level lvl-c2">C2<span>Mastery</span></div>
+      <div class="cefr-center">
+        <div class="cefr-center-label">CEFR Scale</div>
+        <div class="cefr-center-title">Your<br>Level</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS BAR ── -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num">6</span><div class="stat-label">CEFR Levels Covered</div></div>
+  <div class="stat"><span class="stat-num">1:1</span><div class="stat-label">Personalised Sessions</div></div>
+  <div class="stat"><span class="stat-num">100%</span><div class="stat-label">Tailored Curriculum</div></div>
+  <div class="stat"><span class="stat-num">Free</span><div class="stat-label">Initial Consultation</div></div>
+</div>
+
+<!-- ── QUIZ SECTION ── -->
+<section id="quiz">
+  <div class="section-header fade-in">
+    <div class="section-tag">// English Level Assessment</div>
+    <h2 class="section-title">Where Does Your<br><em style="font-style:italic;color:var(--teal)">English</em> Stand?</h2>
+    <p class="section-sub">Answer 20 carefully crafted questions across Grammar, Vocabulary, Reading and Idioms. No pass or fail — just a clear, honest picture of your level.</p>
+  </div>
+
+  <div class="quiz-container fade-in">
+    <div class="quiz-card">
+
+      <!-- Quiz questions -->
+      <div id="quiz-main">
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="progress-fill" style="width:5%"></div>
+        </div>
+        <div class="quiz-meta">
+          <div class="quiz-counter" id="q-counter">Question 1 of 20</div>
+          <div class="quiz-difficulty diff-beginner" id="q-difficulty">Beginner</div>
+        </div>
+        <div class="quiz-question" id="q-text"></div>
+        <div class="quiz-instruction" id="q-instruction"></div>
+        <div class="quiz-options" id="q-options"></div>
+        <div class="quiz-nav">
+          <button class="btn-primary" id="next-btn" onclick="nextQuestion()" disabled>Next &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Quiz results -->
+      <div class="quiz-result" id="quiz-result">
+        <div class="result-badge" id="result-badge"></div>
+        <div class="result-level-name" id="result-level-name"></div>
+        <div class="result-desc" id="result-desc"></div>
+        <div id="result-score"></div>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1rem">
+          <button class="btn-primary" onclick="openContact()">Get My Learning Plan &rarr;</button>
+          <button class="btn-secondary" onclick="restartQuiz()">Try Again</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-visual fade-in">
+    <div class="about-img-frame">
+      <!-- Replace the src below with your hosted mascot image URL before deploying -->
+      <img src="mascot.png" alt="MarquisTeacher Mascot" class="mascot-large">
+      <div class="about-accent">
+        <span class="about-accent-num">CEFR</span>
+        <span class="about-accent-label">Aligned Curriculum</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-text fade-in">
+    <div class="section-tag">// Why MarquisTeacher</div>
+    <h2>English That <em style="font-style:italic;color:var(--teal)">Actually</em> Goes Somewhere.</h2>
+    <p>At MarquisTeacher Academy, we believe language learning should be intellectually stimulating, not repetitive drill work. Every lesson is built around your specific goals, level, and learning rhythm.</p>
+    <ul class="feature-list">
+      <li>One-on-one sessions tailored to your CEFR level</li>
+      <li>Conversational, academic, and professional English tracks</li>
+      <li>Continuous progress tracking with structured feedback</li>
+      <li>Flexible scheduling — online, wherever you are</li>
+      <li>Real-world materials: news, literature, business, culture</li>
+    </ul>
+    <a href="#contact" class="btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;">Book a Free Consultation</a>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="contact-inner fade-in">
+    <div class="section-tag">// Start Your Journey</div>
+    <h2>Ready to Take Your<br>English Further?</h2>
+    <p>Whether you are just getting started or aiming for C2 mastery, we will design a programme built entirely around you. Your first consultation is always free.</p>
+
+    <div class="contact-options">
+      <a href="mailto:MarquisTeacher@gmail.com?subject=Free%20Consultation%20Request" class="contact-card">
+        <div class="contact-card-icon">&#128231;</div>
+        <div class="contact-card-title">Free Consultation</div>
+        <div class="contact-card-desc">Tell us your goals and current level. We will get back to you within 24 hours.</div>
+      </a>
+      <a href="mailto:MarquisTeacher@gmail.com?subject=Sign%20Up%20-%20MarquisTeacher%20Academy" class="contact-card">
+        <div class="contact-card-icon">&#9997;&#65039;</div>
+        <div class="contact-card-title">Sign Up</div>
+        <div class="contact-card-desc">Ready to begin? Email us and we will schedule your first session right away.</div>
+      </a>
+    </div>
+
+    <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;margin:0">
+      Reach us directly at
+      <a href="mailto:MarquisTeacher@gmail.com" class="email-link">MarquisTeacher@gmail.com</a>
+    </p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-brand">Marquis<span>Teacher</span> Academy</div>
+  <div class="footer-copy">&copy; 2025 MarquisTeacher Academy. All rights reserved.</div>
+</footer>
+
+<!-- ── MASCOT ── -->
+<div id="mascot-wrap">
+  <div class="speech-bubble" id="mascot-bubble">
+    <button class="dismiss-bubble" onclick="dismissMascot()">&#x2715;</button>
+    <span id="bubble-text"><strong>Hi there!</strong> I am your guide. Ready to find out your English level? &#127891;</span>
+  </div>
+  <!-- Replace the src below with your hosted mascot image URL before deploying -->
+  <img src="mascot.png" alt="Mascot" class="mascot-img" onclick="dismissMascot()">
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
