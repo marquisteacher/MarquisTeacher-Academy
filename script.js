@@ -2,21 +2,10 @@
    MarquisTeacher Academy — JavaScript
    Quiz engine · Registration · Exam Board · Mascot · Scroll
    ============================================================ */
-// Add this near the top of script.js
+
+// ── API URL ───────────────────────────────────────────────────────────────────
 var API_URL = 'https://marquisteacher-backend.onrender.com';
 
-// When exam result is saved, also POST to backend:
-async function saveResultToServer(entry) {
-  try {
-    await fetch(API_URL + '/api/exam/result', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(entry)
-    });
-  } catch(e) {
-    console.log('Could not sync to server:', e);
-  }
-}
 // ── CEFR LEVEL POINTS SCALE ───────────────────────────────────────────────────
 var LEVEL_POINTS = { A1:10, A2:20, B1:40, B2:60, C1:80, C2:100 };
 
@@ -102,6 +91,55 @@ function getLevelFromScore(s) {
   return lvl;
 }
 
+// ── SERVER FUNCTIONS ──────────────────────────────────────────────────────────
+
+// Save result to Firebase via backend
+async function saveResultToServer(entry) {
+  try {
+    var response = await fetch(API_URL + '/api/exam/result', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name:       entry.name,
+        resultCode: entry.result,
+        resultName: entry.result,
+        selfLevel:  entry.selfLevel,
+        score:      entry.score,
+        maxScore:   maxPossible
+      })
+    });
+    if (response.ok) {
+      console.log('Result saved to Firebase!');
+    }
+  } catch(e) {
+    console.log('Could not sync to server — using localStorage only:', e);
+  }
+}
+
+// Load board from Firebase via backend
+async function loadBoardFromServer() {
+  try {
+    var response = await fetch(API_URL + '/api/exam/board');
+    if (!response.ok) throw new Error('Server error');
+    var data = await response.json();
+    return data.board || [];
+  } catch(e) {
+    console.log('Could not load from server — falling back to localStorage:', e);
+    return loadBoard();
+  }
+}
+
+// Load board stats from server
+async function loadStatsFromServer() {
+  try {
+    var response = await fetch(API_URL + '/api/exam/board/stats');
+    if (!response.ok) throw new Error('Server error');
+    return await response.json();
+  } catch(e) {
+    return null;
+  }
+}
+
 // ── REGISTRATION MODAL ────────────────────────────────────────────────────────
 function openRegistration() {
   document.getElementById('reg-overlay').classList.add('open');
@@ -125,14 +163,12 @@ function pickLevel(btn) {
 function startExam() {
   var name = document.getElementById('reg-name').value.trim();
   var err  = document.getElementById('reg-error');
-
   if (!name || !regSelfLevel) {
     err.style.display = 'block';
     return;
   }
   err.style.display = 'none';
   regName = name;
-
   closeRegistration();
   beginQuiz();
   document.getElementById('quiz').scrollIntoView({ behavior:'smooth' });
@@ -147,7 +183,6 @@ function beginQuiz() {
   document.getElementById('quiz-result').style.display = 'none';
   document.getElementById('quiz-main').style.display   = 'block';
 
-  // Show user bar
   document.getElementById('quiz-user-bar').innerHTML =
     '<span>Taking exam as: <strong>' + regName + '</strong></span>' +
     '<span>Self-assessed: <strong>' + regSelfLevel + '</strong></span>';
@@ -158,9 +193,9 @@ function beginQuiz() {
 
 function renderQuestion() {
   var q = questions[current];
-  document.getElementById('q-counter').textContent    = 'Question ' + (current+1) + ' of ' + questions.length;
-  document.getElementById('q-difficulty').textContent = q.difficulty;
-  document.getElementById('q-difficulty').className   = 'quiz-difficulty ' + q.diffClass;
+  document.getElementById('q-counter').textContent     = 'Question ' + (current+1) + ' of ' + questions.length;
+  document.getElementById('q-difficulty').textContent  = q.difficulty;
+  document.getElementById('q-difficulty').className    = 'quiz-difficulty ' + q.diffClass;
   document.getElementById('progress-fill').style.width = ((current/questions.length)*100 + 5) + '%';
   document.getElementById('q-text').textContent        = q.text;
   document.getElementById('q-instruction').textContent = q.instruction;
@@ -216,13 +251,11 @@ function nextQuestion() {
 
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 function showResult() {
-  document.getElementById('quiz-main').style.display   = 'none';
-  var resultEl = document.getElementById('quiz-result');
-  resultEl.style.display = 'block';
+  document.getElementById('quiz-main').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
 
   var lvl = getLevelFromScore(score);
 
-  // Badge
   var badge = document.getElementById('result-badge');
   badge.style.cssText = 'background:' + lvl.bg + ';color:' + lvl.color + ';border:3px solid ' + lvl.color;
   badge.innerHTML = lvl.code + '<span>' + lvl.name + '</span>';
@@ -232,10 +265,10 @@ function showResult() {
 
   // Skill breakdown
   var skillMeta = {
-    Grammar:    { label:'Grammar',             color:'#2ab3c8' },
-    Vocabulary: { label:'Vocabulary',           color:'#27ae60' },
+    Grammar:    { label:'Grammar',              color:'#2ab3c8' },
+    Vocabulary: { label:'Vocabulary',            color:'#27ae60' },
     Reading:    { label:'Reading Comprehension', color:'#f39c12' },
-    Idioms:     { label:'Idioms & Expressions', color:'#8e44ad' }
+    Idioms:     { label:'Idioms & Expressions',  color:'#8e44ad' }
   };
   var skillMax = {}, skillScore = {}, keys = Object.keys(skillMeta);
   for (var i=0;i<keys.length;i++){skillMax[keys[i]]=0;skillScore[keys[i]]=0;}
@@ -277,7 +310,7 @@ function showResult() {
   document.getElementById('result-comparison').innerHTML =
     '<div class="' + compClass + '">' + compMsg + '</div>';
 
-  // Add to board
+  // Save to both localStorage AND Firebase
   var entry = {
     name:      regName,
     result:    lvl.code,
@@ -287,7 +320,8 @@ function showResult() {
     ts:        Date.now()
   };
   latestEntry = entry;
-  saveToBoardStorage(entry);
+  saveToBoardStorage(entry);   // localStorage (instant, offline backup)
+  saveResultToServer(entry);   // Firebase via backend (shared globally)
   renderBoard();
 
   showMascot('Amazing effort, ' + regName + '! You are now on the <strong>Exam Board</strong>! 🏆', 6000);
@@ -317,50 +351,61 @@ function clearBoard() {
   showMascot('The Exam Board has been cleared. Ready for a fresh start! 🧹', 3000);
 }
 
-function renderBoard() {
-  var board = loadBoard();
+// ── RENDER BOARD (loads from Firebase, falls back to localStorage) ─────────────
+async function renderBoard() {
+  var board = await loadBoardFromServer();
 
-  // Sort by points desc, then score desc
+  // Sort by points desc then score desc
   board.sort(function(a,b) {
-    if (b.points !== a.points) return b.points - a.points;
-    return b.score - a.score;
+    var bPoints = b.points || (LEVEL_POINTS[b.resultCode] || 0);
+    var aPoints = a.points || (LEVEL_POINTS[a.resultCode] || 0);
+    if (bPoints !== aPoints) return bPoints - aPoints;
+    return (b.score||0) - (a.score||0);
   });
 
-  // Stats
-  document.getElementById('board-total').textContent = board.length;
+  // Try to get stats from server
+  var stats = await loadStatsFromServer();
 
-  if (board.length === 0) {
-    document.getElementById('board-avg').textContent      = '—';
+  // Update stat cards
+  document.getElementById('board-total').textContent = stats ? stats.total : board.length;
+
+  if (board.length === 0 && (!stats || stats.total === 0)) {
+    document.getElementById('board-avg').textContent       = '—';
     document.getElementById('board-top-level').textContent = '—';
     document.getElementById('board-rows').innerHTML =
       '<div class="board-empty">No results yet — be the first to take the exam! 🎓</div>';
     return;
   }
 
-  var avg = Math.round(board.reduce(function(s,e){return s+e.points;},0) / board.length);
-  document.getElementById('board-avg').textContent = avg + ' pts';
+  if (stats) {
+    document.getElementById('board-avg').textContent       = stats.avgPoints + ' pts';
+    document.getElementById('board-top-level').textContent = stats.topLevel || '—';
+  } else {
+    var avg = Math.round(board.reduce(function(s,e){ return s+(e.points||0); },0) / board.length);
+    document.getElementById('board-avg').textContent = avg + ' pts';
+    var levelCounts = {};
+    board.forEach(function(e){ var code = e.result||e.resultCode; levelCounts[code]=(levelCounts[code]||0)+1; });
+    var topLevel = Object.keys(levelCounts).reduce(function(a,b){ return levelCounts[a]>levelCounts[b]?a:b; });
+    document.getElementById('board-top-level').textContent = topLevel;
+  }
 
-  var levelCounts = {};
-  board.forEach(function(e){ levelCounts[e.result] = (levelCounts[e.result]||0)+1; });
-  var topLevel = Object.keys(levelCounts).reduce(function(a,b){ return levelCounts[a]>levelCounts[b]?a:b; });
-  document.getElementById('board-top-level').textContent = topLevel;
-
-  var maxPoints = board[0].points || 100;
   var rows = board.map(function(entry, idx) {
-    var rank      = idx + 1;
-    var rankCls   = rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'';
+    var rank       = idx + 1;
+    var rankCls    = rank===1?'rank-1':rank===2?'rank-2':rank===3?'rank-3':'';
     var rankSymbol = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
-    var col       = LEVEL_COLORS[entry.result] || { bg:'#f0f0f0', color:'#444' };
-    var barWidth  = Math.round((entry.points / 100) * 100);
-    var isNew     = latestEntry && entry.name===latestEntry.name && entry.ts===latestEntry.ts;
-    var newTag    = isNew ? '<span class="board-new-tag">New</span>' : '';
+    var code       = entry.result || entry.resultCode || 'A1';
+    var col        = LEVEL_COLORS[code] || { bg:'#f0f0f0', color:'#444' };
+    var pts        = entry.points || LEVEL_POINTS[code] || 0;
+    var barWidth   = Math.round((pts / 100) * 100);
+    var isNew      = latestEntry && entry.name===latestEntry.name && entry.ts===latestEntry.ts;
+    var newTag     = isNew ? '<span class="board-new-tag">New</span>' : '';
 
     return '<div class="board-row' + (isNew?' is-new':'') + '">'
       + '<div class="board-rank ' + rankCls + '">' + rankSymbol + '</div>'
       + '<div class="board-name">' + entry.name + newTag + '</div>'
-      + '<div><span class="board-level-badge" style="background:' + col.bg + ';color:' + col.color + '">' + entry.result + '</span></div>'
-      + '<div class="board-self">' + entry.selfLevel + '</div>'
-      + '<div class="board-points">' + entry.points + '</div>'
+      + '<div><span class="board-level-badge" style="background:' + col.bg + ';color:' + col.color + '">' + code + '</span></div>'
+      + '<div class="board-self">' + (entry.selfLevel||'—') + '</div>'
+      + '<div class="board-points">' + pts + '</div>'
       + '<div class="board-bar-wrap"><div class="board-bar-fill" style="width:' + barWidth + '%;background:' + col.color + '"></div></div>'
       + '</div>';
   }).join('');
@@ -369,9 +414,7 @@ function renderBoard() {
 }
 
 // ── NAVIGATION HELPERS ────────────────────────────────────────────────────────
-function scrollToQuiz() {
-  openRegistration();
-}
+function scrollToQuiz() { openRegistration(); }
 
 function viewBoard() {
   document.getElementById('examboard').scrollIntoView({ behavior:'smooth' });
@@ -392,7 +435,6 @@ function restartQuiz() {
   document.getElementById('quiz-result').style.display = 'none';
   document.getElementById('quiz-main').style.display   = 'none';
   document.getElementById('quiz-intro').style.display  = 'block';
-  // Reset pill selections
   document.querySelectorAll('.level-pick-btn').forEach(function(b){ b.classList.remove('selected'); });
   document.getElementById('reg-name').value = '';
   openRegistration();
@@ -429,18 +471,15 @@ var observer = new IntersectionObserver(function(entries) {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  // Observe fade-in elements
   document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
 
-  // Load board on startup
+  // Load board from Firebase on startup
   renderBoard();
 
-  // Welcome mascot
   setTimeout(function() {
     showMascot('<strong>Welcome to MarquisTeacher Academy!</strong> I\'m Marq — click "Test My English Level" to get started! 👋', 5000);
   }, 1800);
 
-  // Close modal on overlay click
   document.getElementById('reg-overlay').addEventListener('click', function(e) {
     if (e.target === this) closeRegistration();
   });
