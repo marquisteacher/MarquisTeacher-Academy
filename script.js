@@ -2,7 +2,21 @@
    MarquisTeacher Academy — JavaScript
    Quiz engine · Registration · Exam Board · Mascot · Scroll
    ============================================================ */
+// Add this near the top of script.js
+var API_URL = 'https://marquisteacher-backend.onrender.com';
 
+// When exam result is saved, also POST to backend:
+async function saveResultToServer(entry) {
+  try {
+    await fetch(API_URL + '/api/exam/result', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(entry)
+    });
+  } catch(e) {
+    console.log('Could not sync to server:', e);
+  }
+}
 // ── CEFR LEVEL POINTS SCALE ───────────────────────────────────────────────────
 var LEVEL_POINTS = { A1:10, A2:20, B1:40, B2:60, C1:80, C2:100 };
 
