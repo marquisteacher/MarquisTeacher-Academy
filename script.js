@@ -440,104 +440,6 @@ function restartQuiz() {
   openRegistration();
 }
 
-// ── CONTACT MODAL ────────────────────────────────────────────
-function openContactModal(subject) {
-  var overlay   = document.getElementById('contact-modal-overlay');
-  var titleEl   = document.getElementById('contact-modal-title');
-  var subjectEl = document.getElementById('contact-subject');
-  var errorEl   = document.getElementById('contact-error');
-  var successEl = document.getElementById('contact-success');
-  var btnEl     = document.getElementById('contact-submit-btn');
-
-  if (subject) {
-    subjectEl.value    = subject;
-    titleEl.textContent = subject.includes('Consultation') ? 'Free Consultation' : 'Sign Up';
-  }
-
-  errorEl.textContent    = '';
-  errorEl.style.display  = 'none';
-  successEl.style.display = 'none';
-  btnEl.textContent      = 'Send Message \u2192';
-  btnEl.disabled         = false;
-
-  overlay.classList.add('open');
-  document.getElementById('contact-name').focus();
-  showMascot('Fill in your details and we\'ll get back to you within 24 hours! 📬', 4000);
-}
-
-function closeContactModal() {
-  document.getElementById('contact-modal-overlay').classList.remove('open');
-  ['contact-name','contact-email','contact-message'].forEach(function(id) {
-    document.getElementById(id).value = '';
-  });
-}
-
-async function submitContactForm() {
-  var name      = document.getElementById('contact-name').value.trim();
-  var email     = document.getElementById('contact-email').value.trim();
-  var subject   = document.getElementById('contact-subject').value.trim();
-  var message   = document.getElementById('contact-message').value.trim();
-  var errorEl   = document.getElementById('contact-error');
-  var successEl = document.getElementById('contact-success');
-  var btnEl     = document.getElementById('contact-submit-btn');
-
-  errorEl.textContent    = '';
-  errorEl.style.display  = 'none';
-  successEl.style.display = 'none';
-
-  if (!name || !email || !subject || !message) {
-    errorEl.textContent   = 'Please fill in all fields.';
-    errorEl.style.display = 'block';
-    return;
-  }
-  if (message.length < 10) {
-    errorEl.textContent   = 'Please write a message of at least 10 characters.';
-    errorEl.style.display = 'block';
-    return;
-  }
-
-  btnEl.textContent = 'Sending...';
-  btnEl.disabled    = true;
-
-  try {
-    var res  = await fetch(API_URL + '/api/contact', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ name, email, subject, message })
-    });
-    var data = await res.json();
-
-    if (!res.ok) {
-      errorEl.textContent   = data.error || 'Something went wrong. Please try again.';
-      errorEl.style.display = 'block';
-      btnEl.textContent     = 'Send Message \u2192';
-      btnEl.disabled        = false;
-      return;
-    }
-
-    successEl.style.display = 'block';
-    btnEl.textContent       = 'Sent! ✅';
-    showMascot('Message sent! Marquis will be in touch within 24 hours! 🎉', 5000);
-
-    setTimeout(function() {
-      closeContactModal();
-      btnEl.textContent = 'Send Message \u2192';
-      btnEl.disabled    = false;
-    }, 3000);
-
-  } catch(e) {
-    errorEl.textContent   = 'Could not connect — opening email instead.';
-    errorEl.style.display = 'block';
-    btnEl.textContent     = 'Send Message \u2192';
-    btnEl.disabled        = false;
-    setTimeout(function() {
-      window.location.href = 'mailto:MarquisTeacher@gmail.com'
-        + '?subject=' + encodeURIComponent(subject)
-        + '&body='    + encodeURIComponent('Name: ' + name + '\n\n' + message);
-    }, 1500);
-  }
-}
-
 // ── MASCOT ────────────────────────────────────────────────────────────────────
 function showMascot(msg, duration) {
   if (!duration) duration = 4000;
@@ -580,9 +482,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('reg-overlay').addEventListener('click', function(e) {
     if (e.target === this) closeRegistration();
-  });
-
-  document.getElementById('contact-modal-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeContactModal();
   });
 });
