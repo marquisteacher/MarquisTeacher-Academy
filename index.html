@@ -218,16 +218,16 @@
     <h2>Ready to Take Your<br>English Further?</h2>
     <p>Whether you are just getting started or aiming for C2 mastery, we will design a programme built entirely around you. Your first consultation is always free.</p>
     <div class="contact-options">
-      <a href="mailto:MarquisTeacher@gmail.com?subject=Free%20Consultation%20Request" class="contact-card">
+      <div class="contact-card" onclick="openContactModal('Free Consultation Request')" style="cursor:pointer">
         <div class="contact-card-icon">&#128231;</div>
         <div class="contact-card-title">Free Consultation</div>
         <div class="contact-card-desc">Tell us your goals and current level. We will get back to you within 24 hours.</div>
-      </a>
-      <a href="mailto:MarquisTeacher@gmail.com?subject=Sign%20Up%20-%20MarquisTeacher%20Academy" class="contact-card">
+      </div>
+      <div class="contact-card" onclick="openContactModal('Sign Up — MarquisTeacher Academy')" style="cursor:pointer">
         <div class="contact-card-icon">&#9997;&#65039;</div>
         <div class="contact-card-title">Sign Up</div>
         <div class="contact-card-desc">Ready to begin? Email us and we will schedule your first session right away.</div>
-      </a>
+      </div>
     </div>
     <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;margin:0">
       Reach us directly at
@@ -235,6 +235,39 @@
     </p>
   </div>
 </section>
+
+<!-- ── CONTACT MODAL ── -->
+<div id="contact-modal-overlay" class="modal-overlay">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeContactModal()">&#x2715;</button>
+    <div class="modal-tag">// Get In Touch</div>
+    <h3 class="modal-title" id="contact-modal-title">Free Consultation</h3>
+    <p class="modal-sub">Fill in your details and we will get back to you within 24 hours.</p>
+    <div class="modal-field">
+      <label class="modal-label">Your Name</label>
+      <input class="modal-input" id="contact-name" type="text" placeholder="e.g. Maria Santos" maxlength="60">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Email Address</label>
+      <input class="modal-input" id="contact-email" type="email" placeholder="you@example.com">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Subject</label>
+      <input class="modal-input" id="contact-subject" type="text" placeholder="e.g. Free Consultation Request">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Message</label>
+      <textarea class="modal-input modal-textarea" id="contact-message" placeholder="Tell us about your English learning goals..." rows="4"></textarea>
+    </div>
+    <div class="modal-error" id="contact-error" style="display:none"></div>
+    <div class="modal-success" id="contact-success" style="display:none">
+      ✅ Message sent! We will get back to you within 24 hours.
+    </div>
+    <button class="btn-primary modal-start-btn" id="contact-submit-btn" onclick="submitContactForm()">
+      Send Message &rarr;
+    </button>
+  </div>
+</div>
 
 <!-- ── FOOTER ── -->
 <footer>
@@ -245,12 +278,4 @@
 <!-- ── MASCOT ── -->
 <div id="mascot-wrap">
   <div class="speech-bubble" id="mascot-bubble">
-    <button class="dismiss-bubble" onclick="dismissMascot()">&#x2715;</button>
-    <span id="bubble-text"><strong>Hi there!</strong> I am your guide. Ready to find out your English level? &#127891;</span>
-  </div>
-  <img src="mascot.png" alt="Mascot" class="mascot-img" onclick="dismissMascot()">
-</div>
-
-<script src="script.js"></script>
-</body>
-</html>
+    <button class="dismiss-bu
