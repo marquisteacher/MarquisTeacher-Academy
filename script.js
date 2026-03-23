@@ -579,4 +579,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('reg-overlay').addEventListener('click', function(e) {
     if (e.target === this) closeRegistration();
   });
+
+  document.getElementById('contact-modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeContactModal();
+  });
 });
