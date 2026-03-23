@@ -414,6 +414,22 @@ h1 em { font-style: italic; color: var(--teal); }
   margin-bottom: 1rem;
   display: none;
 }
+.modal-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.6;
+}
+.modal-success {
+  font-size: 0.85rem;
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.08);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
 .modal-start-btn {
   width: 100%;
   padding: 1rem;
