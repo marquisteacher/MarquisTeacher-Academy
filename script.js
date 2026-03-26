@@ -276,6 +276,13 @@ function showResult() {
   for (var i=0;i<userAnswers.length;i++) {
     if(userAnswers[i].correct) skillScore[userAnswers[i].q.skill]+=userAnswers[i].q.weight;
   }
+  // Save skill scores for PDF generation
+  localStorage.setItem('mt_exam_skills', JSON.stringify({
+    grammar:    Math.round((skillScore['Grammar']    / skillMax['Grammar'])    * 100),
+    vocabulary: Math.round((skillScore['Vocabulary'] / skillMax['Vocabulary']) * 100),
+    reading:    Math.round((skillScore['Reading']    / skillMax['Reading'])    * 100),
+    idioms:     Math.round((skillScore['Idioms']     / skillMax['Idioms'])     * 100)
+  }));
   var bars = '';
   for (var i=0;i<keys.length;i++){
     var s=keys[i], pct=Math.round((skillScore[s]/skillMax[s])*100);
@@ -438,6 +445,58 @@ function restartQuiz() {
   document.querySelectorAll('.level-pick-btn').forEach(function(b){ b.classList.remove('selected'); });
   document.getElementById('reg-name').value = '';
   openRegistration();
+}
+// ── PDF LEARNING PLAN ─────────────────────────────────────────
+async function downloadLearningPlan() {
+  var btn = document.getElementById('download-pdf-btn');
+  btn.textContent = '⏳ Generating your plan...';
+  btn.disabled    = true;
+
+  var skills = JSON.parse(localStorage.getItem('mt_exam_skills') || '{}');
+
+  try {
+    var res = await fetch(API_URL + '/api/exam/pdf', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        name:       regName,
+        resultCode: latestEntry.result,
+        selfLevel:  latestEntry.selfLevel,
+        grammar:    skills.grammar    || 0,
+        vocabulary: skills.vocabulary || 0,
+        reading:    skills.reading    || 0,
+        idioms:     skills.idioms     || 0,
+        score:      latestEntry.score,
+        maxScore:   maxPossible
+      })
+    });
+
+    if (!res.ok) throw new Error('PDF generation failed');
+
+    var blob   = await res.blob();
+    var url    = window.URL.createObjectURL(blob);
+    var a      = document.createElement('a');
+    a.href     = url;
+    a.download = 'MarquisTeacher_LearningPlan_' + regName.replace(/\s/g,'_') + '.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+
+    btn.textContent = '✅ Downloaded!';
+    showMascot('Your personalised learning plan is downloading! 📄🎓', 4000);
+
+    setTimeout(function() {
+      btn.textContent = '📄 Download My Learning Plan';
+      btn.disabled    = false;
+    }, 3000);
+
+  } catch(e) {
+    console.error('PDF download error:', e);
+    btn.textContent = '📄 Download My Learning Plan';
+    btn.disabled    = false;
+    showMascot('Could not generate PDF right now — please try again! 😊', 3000);
+  }
 }
 // ── CONTACT MODAL ────────────────────────────────────────────
 function openContactModal(subject) {
