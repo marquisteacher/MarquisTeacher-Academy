@@ -498,6 +498,28 @@ async function downloadLearningPlan() {
     showMascot('Could not generate PDF right now — please try again! 😊', 3000);
   }
 }
+// ── AI TUTOR LINK ─────────────────────────────────────────────
+function goToTutor() {
+  if (!latestEntry) {
+    showMascot('Complete the exam first to get your personalised tutor session! 🎯', 3000);
+    return;
+  }
+
+  var skills = JSON.parse(localStorage.getItem('mt_exam_skills') || '{}');
+
+  var params = new URLSearchParams({
+    name:       regName,
+    level:      latestEntry.result,
+    selfLevel:  latestEntry.selfLevel,
+    grammar:    skills.grammar    || 0,
+    vocabulary: skills.vocabulary || 0,
+    reading:    skills.reading    || 0,
+    idioms:     skills.idioms     || 0
+  });
+
+  var tutorURL = 'https://marquisteacher.github.io/marquisteacher-tutor/?' + params.toString();
+  window.open(tutorURL, '_blank');
+}
 // ── CONTACT MODAL ────────────────────────────────────────────
 function openContactModal(subject) {
   var overlay   = document.getElementById('contact-modal-overlay');
