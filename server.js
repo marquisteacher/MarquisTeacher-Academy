@@ -1,18 +1,10 @@
-// ═══════════════════════════════════════════════════════════
-//  MarquisTeacher Academy — server.js
-//  Serves the site + proxies Claude API calls securely
-// ═══════════════════════════════════════════════════════════
 const express = require('express');
 const path    = require('path');
 const app     = express();
 
 app.use(express.json());
 
-// Serve root assets like mascot.png
-app.use(express.static(path.join(__dirname)));
-
-// ── CLAUDE API PROXY ──────────────────────────────────────
-// Keeps your API key secret — never exposed to the browser
+// Claude API proxy
 app.post('/api/chat', async (req, res) => {
   const key = process.env.CLAUDE_KEY;
   if (!key) { return res.status(500).json({ error: 'CLAUDE_KEY not configured' }); }
@@ -29,15 +21,19 @@ app.post('/api/chat', async (req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (e) {
-    res.status(500).json({ error: 'AI service unavailable', detail: e.message });
+    res.status(500).json({ error: 'AI service unavailable' });
   }
 });
 
-// ── STATIC FILES ──────────────────────────────────────────
-// Serve everything in /public (your existing site)
+// Serve mascot.png and other root assets directly
+app.get('/mascot.png', (req, res) => {
+  res.sendFile(path.join(__dirname, 'mascot.png'));
+});
+
+// Serve the Academy app
 app.use(express.static(path.join(__dirname, 'academy')));
 
-// SPA fallback — index.html for all unmatched routes
+// All routes go to Academy
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'academy', 'index.html'));
 });
