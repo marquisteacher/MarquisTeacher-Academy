@@ -32,11 +32,11 @@ app.post('/api/chat', async (req, res) => {
 
 // ── STATIC FILES ──────────────────────────────────────────
 // Serve everything in /public (your existing site)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
 
 // SPA fallback — index.html for all unmatched routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
