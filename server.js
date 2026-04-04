@@ -8,6 +8,9 @@ const app     = express();
 
 app.use(express.json());
 
+// Serve root assets like mascot.png
+app.use(express.static(path.join(__dirname)));
+
 // ── CLAUDE API PROXY ──────────────────────────────────────
 // Keeps your API key secret — never exposed to the browser
 app.post('/api/chat', async (req, res) => {
