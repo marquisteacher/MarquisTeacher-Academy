@@ -361,101 +361,173 @@
       </div>
     </div>
 
-    <!-- Updates placeholder -->
-  <div class="fade-in" style="background:var(--white);border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-bottom:1.5rem">
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
-    <img src="Pic 1.jpeg" alt="EducationUSA Session" style="width:100%;height:180px;object-fit:cover">
-    <img src="Pic 2.jpeg" alt="EducationUSA Session" style="width:100%;height:180px;object-fit:cover">
-    <img src="Pic 3.jpeg" alt="EducationUSA Session" style="width:100%;height:180px;object-fit:cover">
-    <img src="Pic 4.jpeg" alt="EducationUSA Session" style="width:100%;height:180px;object-fit:cover">
-    <img src="Pic 5.jpeg" alt="EducationUSA Session" style="width:100%;height:180px;object-fit:cover">
-    <img src="Pic 6.jpeg" alt="EducationUSA Session" style="width:100%;height:180px;object-fit:cover">
   </div>
-  <div style="padding:1.5rem">
-    <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--teal);letter-spacing:0.08em;margin-bottom:0.5rem">JUNE 2026 · EVENT RECAP</div>
-    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:1rem">EducationUSA — Adana Exclusive Session</h3>
-    <p style="font-size:0.9rem;color:var(--gray);line-height:1.8;margin-bottom:1rem">
-      On June 5th, 2026 the opportunity was given to attend an Exclusive EducationUSA session in Adana. The session included valuable information for students looking to study within the medical field in the United States. Truly a wonderful time. Thank you EducationUSA for this wonderful Exclusive Session.
-    </p>
-    <p style="font-size:0.85rem;color:var(--ink);font-style:italic;font-weight:500">— Truly, MarquisTeacher</p>
+
+<!-- ── EVENT GALLERY ── -->
+<div class="fade-in" id="event-gallery">
+
+  <!-- Event Tabs -->
+  <div class="gallery-tabs">
+    <button class="gallery-tab active" onclick="switchEvent(0)">
+      <span class="tab-date">Jun 5</span>
+      <span class="tab-name">EducationUSA</span>
+    </button>
+    <button class="gallery-tab" onclick="switchEvent(1)">
+      <span class="tab-date">Jun 9-10</span>
+      <span class="tab-name">Istanbul Lider</span>
+    </button>
+    <button class="gallery-tab" onclick="switchEvent(2)">
+      <span class="tab-date">Jun 16</span>
+      <span class="tab-name">Cukurova Uni</span>
+    </button>
+    <button class="gallery-tab" onclick="switchEvent(3)">
+      <span class="tab-date">Jun 20</span>
+      <span class="tab-name">ESL Seminar</span>
+    </button>
   </div>
+
+  <!-- Carousel -->
+  <div class="carousel-wrap">
+    <button class="carousel-btn" onclick="prevSlide()">&#8592;</button>
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="carousel-track"></div>
+    </div>
+    <button class="carousel-btn" onclick="nextSlide()">&#8594;</button>
+  </div>
+
+  <!-- Dots and counter -->
+  <div class="carousel-dots" id="carousel-dots"></div>
+  <div class="carousel-counter" id="carousel-counter">1 / 1</div>
+
+  <!-- Event description -->
+  <div class="event-info" id="event-info"></div>
+
 </div>
 
- <div class="fade-in" style="background:var(--white);border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-bottom:1.5rem">
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
-    <img src=" Student 1.jpeg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 2.jpg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 3.jpg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 4.jpg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 5.jpg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 6.jpg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 7.jpg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 8.jpeg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 9.jpeg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="Student 10.jpeg" alt="Istanbul Lider Graduation" style="width:100%;height:180px;object-fit:cover">
-  </div>
-  <div style="padding:1.5rem">
-    <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--teal);letter-spacing:0.08em;margin-bottom:0.5rem">JUNE 9 & 10, 2026 · EVENT RECAP</div>
-    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:1rem">Istanbul Lider College Graduation Ceremony</h3>
-    <p style="font-size:0.9rem;color:var(--gray);line-height:1.8;margin-bottom:1rem">
-      On June 9th &amp; 10th Istanbul Lider College organized a wonderful graduation ceremony for their 8th and 12th graders. I've been teaching majority of the students you see in pictures for more than 8 years. Through all the growth and mindset changes it was an absolute honor to have witnessed such an amazing milestone in their educational careers. To all my students — Past, Present, and Future — you are forever loved.
-    </p>
-    <p style="font-size:0.85rem;color:var(--ink);font-style:italic;font-weight:500">— Truly, MarquisTeacher</p>
-  </div>
-</div>  
-
-<div class="fade-in" style="background:var(--white);border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-bottom:1.5rem">
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
-    <img src="CUISD 1.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 2.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 3.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 4.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 5.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 6.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 7.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 8.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-    <img src="CUISD 9.jpg" alt="Çukurova University Graduation" style="width:100%;height:180px;object-fit:cover">
-  </div>
-  <div style="padding:1.5rem">
-    <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--teal);letter-spacing:0.08em;margin-bottom:0.5rem">JUNE 16, 2026 · EVENT RECAP</div>
-    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:1rem">Çukurova University ‘International Student Department’ Graduation Ceremony</h3>
-    <p style="font-size:0.9rem;color:var(--gray);line-height:1.8;margin-bottom:1rem">
-      What an absolute pleasure and outstanding honor it was to be invited and speak at this ceremony. The International Student Department at Çukurova University is by far amongst the greatest in Türkiye. Their president (at the time) Losene (Leo) Kamara- may just be the greatest to have ever held that position.  Moving forward, I truly wish the greatest of glory to the remarkable graduates- Congratulations to Class of 2026.</p>
-    <p style="font-size:0.85rem;color:var(--ink);font-style:italic;font-weight:500">— Truly, MarquisTeacher</p>
-  </div>
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out">
+  <button onclick="closeLightbox()" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:white;font-size:2rem;cursor:pointer;z-index:10000">&#x2715;</button>
+  <button onclick="event.stopPropagation();lbPrev()" style="position:absolute;left:1.5rem;top:50%;transform:translateY(-50%);background:none;border:none;color:white;font-size:2.5rem;cursor:pointer;z-index:10000">&#8592;</button>
+  <img id="lightbox-img" src="" alt="" style="max-width:90vw;max-height:90vh;object-fit:contain;border-radius:8px">
+  <button onclick="event.stopPropagation();lbNext()" style="position:absolute;right:1.5rem;top:50%;transform:translateY(-50%);background:none;border:none;color:white;font-size:2.5rem;cursor:pointer;z-index:10000">&#8594;</button>
 </div>
-<div class="fade-in" style="background:var(--white);border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-bottom:1.5rem">
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">
-    <img src="Active ESL 1.jpeg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 2.jpeg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 3.jpg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 4.jpg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 5.jpg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 6.jpeg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 7.jpeg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 8.jpeg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 9.jpeg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 10.jpeg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 11.jpg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-    <img src="Active ESL 12.jpg" alt="Seminar Interactive Learning" style="width:100%;height:180px;object-fit:cover">
-  </div>
-  <div style="padding:1.5rem">
-    <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--teal);letter-spacing:0.08em;margin-bottom:0.5rem">JUNE 20, 2026 · EVENT RECAP</div>
-    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:1rem">Seminar: Interactive Learning in ESL</h3>
-    <p style="font-size:0.9rem;color:var(--gray);line-height:1.8;margin-bottom:1rem">
-      This spectacular seminar brought educators and language professionals together from around Türkiye. Together we explored innovative, learner-centered strategies specifically designed to increase student engagement in English language education. 
 
-With the support of the Regional English Language Office (RELO) and TAD Connect USA, the event celebrated collaboration, innovation, and a shared commitment to the future of language education.
+<style>
+.gallery-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.gallery-tab{display:flex;flex-direction:column;align-items:center;padding:.6rem 1rem;background:var(--white);border:1px solid #e5e7eb;border-radius:10px;cursor:pointer;transition:all .2s;flex:1;min-width:90px}
+.gallery-tab.active{background:var(--ink);border-color:var(--ink)}
+.tab-date{font-family:'Space Mono',monospace;font-size:.6rem;color:var(--teal);letter-spacing:.08em;margin-bottom:2px}
+.gallery-tab.active .tab-date{color:var(--teal-light)}
+.tab-name{font-size:.78rem;font-weight:600;color:var(--ink)}
+.gallery-tab.active .tab-name{color:white}
+.carousel-wrap{position:relative;display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.carousel-track-wrap{flex:1;overflow:hidden;border-radius:12px}
+.carousel-track{display:flex;transition:transform .4s ease}
+.carousel-slide{min-width:100%;cursor:zoom-in}
+.carousel-slide img{width:100%;height:420px;object-fit:cover;border-radius:12px;display:block}
+.carousel-btn{background:var(--ink);color:white;border:none;width:40px;height:40px;border-radius:50%;font-size:1rem;cursor:pointer;flex-shrink:0;transition:background .2s}
+.carousel-btn:hover{background:var(--teal)}
+.carousel-dots{display:flex;justify-content:center;gap:6px;margin-bottom:.5rem;flex-wrap:wrap}
+.carousel-dot{width:8px;height:8px;border-radius:50%;background:#e5e7eb;cursor:pointer;transition:background .2s;border:none;padding:0}
+.carousel-dot.active{background:var(--teal)}
+.carousel-counter{text-align:center;font-family:'Space Mono',monospace;font-size:.65rem;color:var(--gray);letter-spacing:.1em;margin-bottom:1.5rem}
+.event-info{background:var(--white);border:1px solid #e5e7eb;border-radius:12px;padding:1.5rem}
+.event-info-tag{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--teal);letter-spacing:.08em;margin-bottom:.5rem}
+.event-info-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:.75rem}
+.event-info-body{font-size:.88rem;color:var(--gray);line-height:1.8;margin-bottom:.75rem}
+.event-info-sig{font-size:.82rem;color:var(--ink);font-style:italic;font-weight:500}
+@media(max-width:600px){.carousel-slide img{height:260px}}
+</style>
 
-<h1>Honorable Mentions:</h1> <b>Mehdi Seyedinasab • Hamidou Camara (MAC) • Sule Berilgen • Ashanti Lee</b> 
+<script>
+var EVENTS=[
+  {
+    tag:'JUNE 5, 2026 &middot; EVENT RECAP',
+    title:'EducationUSA &mdash; Adana Exclusive Session',
+    body:'On June 5th, 2026 the opportunity was given to attend an Exclusive EducationUSA session in Adana. The session included valuable information for students looking to study within the medical field in the United States. Truly a wonderful time. Thank you EducationUSA for this wonderful Exclusive Session.',
+    sig:'&mdash; Truly, MarquisTeacher',
+    images:['Pic 1.jpeg','Pic 2.jpeg','Pic 3.jpeg','Pic 4.jpeg','Pic 5.jpeg','Pic 6.jpeg']
+  },
+  {
+    tag:'JUNE 9 &amp; 10, 2026 &middot; EVENT RECAP',
+    title:'Istanbul Lider College Graduation Ceremony',
+    body:'On June 9th &amp; 10th Istanbul Lider College organized a wonderful graduation ceremony for their 8th and 12th graders. I have been teaching majority of the students you see in pictures for more than 8 years. Through all the growth and mindset changes it was an absolute honor to have witnessed such an amazing milestone in their educational careers. To all my students &mdash; Past, Present, and Future &mdash; you are forever loved.',
+    sig:'&mdash; Truly, MarquisTeacher',
+    images:['Student 1.jpeg','Student 2.jpg','Student 3.jpg','Student 4.jpg','Student 5.jpg','Student 6.jpg','Student 7.jpg','Student 8.jpeg','Student 9.jpeg','Student 10.jpeg']
+  },
+  {
+    tag:'JUNE 16, 2026 &middot; EVENT RECAP',
+    title:'&#199;ukurova University International Student Department Graduation Ceremony',
+    body:'What an absolute pleasure and outstanding honor it was to be invited and speak at this ceremony. The International Student Department at &#199;ukurova University is by far amongst the greatest in T&uuml;rkiye. Their president (at the time) Losene (Leo) Kamara &mdash; may just be the greatest to have ever held that position. Moving forward, I truly wish the greatest of glory to the remarkable graduates &mdash; Congratulations to Class of 2026.',
+    sig:'&mdash; Truly, MarquisTeacher',
+    images:['CUISD 1.jpg','CUISD 2.jpg','CUISD 3.jpg','CUISD 4.jpg','CUISD 5.jpg','CUISD 6.jpg','CUISD 7.jpg','CUISD 8.jpg','CUISD 9.jpg']
+  },
+  {
+    tag:'JUNE 20, 2026 &middot; EVENT RECAP',
+    title:'Seminar: Interactive Learning in ESL',
+    body:'This spectacular seminar brought educators and language professionals together from around T&uuml;rkiye. Together we explored innovative, learner-centered strategies specifically designed to increase student engagement in English language education.<br><br>With the support of the Regional English Language Office (RELO) and TAD Connect USA, the event celebrated collaboration, innovation, and a shared commitment to the future of language education.<br><br><strong>Honorable Mentions:</strong> Mehdi Seyedinasab &bull; Hamidou Camara (MAC) &bull; Sule Berilgen &bull; Ashanti Lee<br><br>Thank you to everyone who contributed to making Interactive Learning in ESL a meaningful professional learning experience. Together, we inspire engagement, empower learners, and build the future of education.',
+    sig:'&mdash; Truly, MarquisTeacher',
+    images:['Active ESL 1.jpeg','Active ESL 2.jpeg','Active ESL 3.jpg','Active ESL 4.jpg','Active ESL 5.jpg','Active ESL 6.jpeg','Active ESL 7.jpeg','Active ESL 8.jpeg','Active ESL 9.jpeg','Active ESL 10.jpeg','Active ESL 11.jpg','Active ESL 12.jpg']
+  }
+];
 
- <p style="font-size:0.9rem;color:var(--gray);line-height:1.8;margin-bottom:1rem"> Thank you to everyone who contributed to making Interactive Learning in ESL a meaningful professional learning experience.
+var currentEvent=0,currentSlide=0;
 
-Together, we inspire engagement, empower learners, and build the future of education
-    </p>
-    <p style="font-size:0.85rem;color:var(--ink);font-style:italic;font-weight:500">— Truly, MarquisTeacher</p>
-  </div>
-</div>
+function switchEvent(idx){
+  currentEvent=idx;currentSlide=0;
+  document.querySelectorAll('.gallery-tab').forEach(function(t,i){t.classList.toggle('active',i===idx);});
+  renderCarousel();
+}
+
+function renderCarousel(){
+  var ev=EVENTS[currentEvent];
+  document.getElementById('carousel-track').innerHTML=ev.images.map(function(src,i){
+    return '<div class="carousel-slide" onclick="openLightbox('+i+')">'
+      +'<img src="'+src+'" alt="'+ev.title+'" loading="lazy"></div>';
+  }).join('');
+  document.getElementById('carousel-dots').innerHTML=ev.images.map(function(_,i){
+    return '<button class="carousel-dot'+(i===0?' active':'')+'" onclick="goToSlide('+i+')"></button>';
+  }).join('');
+  document.getElementById('event-info').innerHTML=
+    '<div class="event-info-tag">'+ev.tag+'</div>'
+    +'<div class="event-info-title">'+ev.title+'</div>'
+    +'<div class="event-info-body">'+ev.body+'</div>'
+    +'<div class="event-info-sig">'+ev.sig+'</div>';
+  updateSlide();
+}
+
+function updateSlide(){
+  var ev=EVENTS[currentEvent];
+  document.getElementById('carousel-track').style.transform='translateX(-'+(currentSlide*100)+'%)';
+  document.querySelectorAll('.carousel-dot').forEach(function(d,i){d.classList.toggle('active',i===currentSlide);});
+  document.getElementById('carousel-counter').textContent=(currentSlide+1)+' / '+ev.images.length;
+}
+
+function nextSlide(){var ev=EVENTS[currentEvent];currentSlide=(currentSlide+1)%ev.images.length;updateSlide();}
+function prevSlide(){var ev=EVENTS[currentEvent];currentSlide=(currentSlide-1+ev.images.length)%ev.images.length;updateSlide();}
+function goToSlide(idx){currentSlide=idx;updateSlide();}
+
+function openLightbox(idx){
+  currentSlide=idx;
+  var lb=document.getElementById('lightbox');
+  lb.style.display='flex';
+  document.getElementById('lightbox-img').src=EVENTS[currentEvent].images[idx];
+}
+function closeLightbox(){document.getElementById('lightbox').style.display='none';}
+function lbNext(){var ev=EVENTS[currentEvent];currentSlide=(currentSlide+1)%ev.images.length;document.getElementById('lightbox-img').src=ev.images[currentSlide];updateSlide();}
+function lbPrev(){var ev=EVENTS[currentEvent];currentSlide=(currentSlide-1+ev.images.length)%ev.images.length;document.getElementById('lightbox-img').src=ev.images[currentSlide];updateSlide();}
+
+document.addEventListener('keydown',function(e){
+  var lb=document.getElementById('lightbox');
+  if(lb&&lb.style.display==='flex'){
+    if(e.key==='ArrowRight')lbNext();
+    if(e.key==='ArrowLeft')lbPrev();
+    if(e.key==='Escape')closeLightbox();
+  }
+});
+
+document.addEventListener('DOMContentLoaded',function(){renderCarousel();});
+</script>
 </section>
 
 <!-- ── ABOUT ── -->
@@ -560,3 +632,4 @@ Together, we inspire engagement, empower learners, and build the future of educa
 <script src="script.js"></script>
 </body>
 </html>
+
