@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarquisTeacher — Trivium Tour Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0d0d0d;
+    color: #f0ece4;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  /* ── CODE SCREEN ── */
+  #code-screen {
+    text-align: center;
+    max-width: 480px;
+    width: 100%;
+  }
+
+  .tt-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: #c9a84c;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+  }
+
+  .tt-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .tt-title em {
+    font-style: italic;
+    color: #c9a84c;
+  }
+
+  .tt-sub {
+    font-size: 0.9rem;
+    color: rgba(240,236,228,0.5);
+    margin-bottom: 3rem;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .code-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: rgba(240,236,228,0.4);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .code-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    color: #f0ece4;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 1rem;
+  }
+
+  .code-input:focus {
+    border-color: #c9a84c;
+  }
+
+  .code-input::placeholder {
+    color: rgba(240,236,228,0.2);
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+  }
+
+  .code-btn {
+    width: 100%;
+    padding: 1rem;
+    background: #c9a84c;
+    color: #0d0d0d;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .code-btn:hover {
+    background: #e0c06a;
+    transform: translateY(-1px);
+  }
+
+  .code-error {
+    color: #e74c3c;
+    font-size: 0.82rem;
+    margin-top: 0.75rem;
+    min-height: 1.2rem;
+  }
+
+  .trivium-footer {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(240,236,228,0.2);
+    letter-spacing: 0.15em;
+    margin-top: 3rem;
+  }
+
+  /* ── ENVELOPE SCREEN ── */
+  #envelope-screen {
+    display: none;
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .envelope-wrap {
+    position: relative;
+    width: 340px;
+    height: 240px;
+    margin: 0 auto 2rem;
+    cursor: pointer;
+    perspective: 1000px;
+  }
+
+  .envelope-body {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #e8e0d0, #d4c9b0);
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+    background: linear-gradient(135deg, #d4c9b0, #c5b89a);
+    clip-path: polygon(0 0, 50% 65%, 100% 0);
+    transform-origin: top center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3;
+  }
+
+  .envelope-flap.open {
+    transform: rotateX(-180deg);
+  }
+
+  .envelope-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 52%;
+    height: 55%;
+    background: linear-gradient(135deg, #c5b89a, #b8a98a);
+    clip-path: polygon(0 100%, 0 0, 100% 100%);
+  }
+
+  .envelope-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 52%;
+    height: 55%;
+    background: linear-gradient(135deg, #b8a98a, #c5b89a);
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
+
+  .envelope-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+    background: linear-gradient(to bottom, #d4c9b0, #c5b89a);
+    border-radius: 0 0 4px 4px;
+  }
+
+  .wax-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #8b1a1a, #6b0f0f);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #c9a84c;
+    font-weight: 900;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    z-index: 4;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .wax-seal.cracked {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+
+  .letter-peek {
+    position: absolute;
+    bottom: 8px;
+    left: 20px;
+    right: 20px;
+    height: 0;
+    background: #faf7f2;
+    border-radius: 2px;
+    transition: height 0.8s ease 0.4s;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .letter-peek.show {
+    height: 80px;
+  }
+
+  .envelope-hint {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(240,236,228,0.4);
+    letter-spacing: 0.1em;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%,100%{opacity:0.4} 50%{opacity:0.9}
+  }
+
+  /* ── LETTER SCREEN ── */
+  #letter-screen {
+    display: none;
+    width: 100%;
+    max-width: 680px;
+    animation: letterRise 0.8s ease both;
+  }
+
+  @keyframes letterRise {
+    from{opacity:0;transform:translateY(40px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  .letter-paper {
+    background: #faf7f2;
+    border-radius: 4px;
+    padding: 3rem;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    color: #1a1a2e;
+    position: relative;
+    margin-bottom: 2rem;
+  }
+
+  .letter-header {
+    text-align: center;
+    border-bottom: 1px solid #e5ddd0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .letter-academy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: #8b1a1a;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .letter-tour {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #1a1a2e;
+    margin-bottom: 0.25rem;
+  }
+
+  .letter-trivium {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    color: #c9a84c;
+    letter-spacing: 0.15em;
+  }
+
+  .letter-guest-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 1.5rem 0 0.25rem;
+  }
+
+  .letter-guest-role {
+    font-size: 0.8rem;
+    color: #6b7280;
+    font-style: italic;
+  }
+
+  .letter-theme {
+    background: #f0ece4;
+    border-left: 3px solid #c9a84c;
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .letter-theme-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: #c9a84c;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .letter-theme-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    font-style: italic;
+  }
+
+  .letter-body {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: #374151;
+    margin-bottom: 1.5rem;
+  }
+
+  .letter-trivium-flow {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .trivium-step {
+    flex: 1;
+    min-width: 120px;
+    background: #f0ece4;
+    border-radius: 6px;
+    padding: 0.75rem;
+    text-align: center;
+  }
+
+  .trivium-step-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: #c9a84c;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .trivium-step-text {
+    font-size: 0.75rem;
+    color: #374151;
+    line-height: 1.4;
+  }
+
+  .letter-closing {
+    font-size: 0.9rem;
+    color: #374151;
+    margin-top: 1.5rem;
+    line-height: 1.8;
+  }
+
+  .letter-signature {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5ddd0;
+  }
+
+  .letter-sig-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #1a1a2e;
+  }
+
+  .letter-sig-title {
+    font-size: 0.78rem;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  /* ── RESPONSE BUTTONS ── */
+  .response-wrap {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-accept {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: #c9a84c;
+    color: #0d0d0d;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-accept:hover {
+    background: #e0c06a;
+    transform: translateY(-2px);
+  }
+
+  .btn-decline {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    color: rgba(240,236,228,0.5);
+    border: 1px solid rgba(240,236,228,0.2);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-decline:hover {
+    border-color: rgba(240,236,228,0.4);
+    color: rgba(240,236,228,0.7);
+  }
+
+  /* ── CONFIRMATION SCREEN ── */
+  #confirm-screen {
+    display: none;
+    text-align: center;
+    max-width: 480px;
+    animation: letterRise 0.6s ease both;
+  }
+
+  .confirm-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .confirm-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.75rem;
+  }
+
+  .confirm-sub {
+    font-size: 0.9rem;
+    color: rgba(240,236,228,0.6);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  @media (max-width: 600px) {
+    .letter-paper { padding: 1.5rem; }
+    .envelope-wrap { width: 280px; height: 200px; }
+    .trivium-step { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── CODE ENTRY ── -->
+<div id="code-screen">
+  <div class="tt-logo">MarquisTeacher Academy</div>
+  <h1 class="tt-title">The <em>Trivium</em> Tour</h1>
+  <p class="tt-sub">You have received a personal invitation.<br>Enter your unique access code to open your letter.</p>
+  <div class="code-label">Your Invitation Code</div>
+  <input class="code-input" id="code-input" type="text" placeholder="Enter your code" maxlength="20"
+    onkeydown="if(event.key==='Enter')validateCode()">
+  <button class="btn-accept" onclick="validateCode()">Open My Invitation →</button>
+  <div class="code-error" id="code-error"></div>
+  <div class="trivium-footer">LOGIC · GRAMMAR · RHETORIC</div>
+</div>
+
+<!-- ── ENVELOPE ── -->
+<div id="envelope-screen">
+  <div class="tt-logo" style="margin-bottom:1.5rem">MarquisTeacher Trivium Tour</div>
+  <p style="font-size:0.9rem;color:rgba(240,236,228,0.5);margin-bottom:2rem;font-weight:300">
+    Your invitation awaits. Click the seal to open.
+  </p>
+  <div class="envelope-wrap" onclick="openEnvelope()">
+    <div class="envelope-body"></div>
+    <div class="envelope-bottom"></div>
+    <div class="envelope-left"></div>
+    <div class="envelope-right"></div>
+    <div class="envelope-flap" id="env-flap"></div>
+    <div class="wax-seal" id="wax-seal">MT</div>
+    <div class="letter-peek" id="letter-peek"></div>
+  </div>
+  <p class="envelope-hint" id="env-hint">Click the seal to open</p>
+</div>
+
+<!-- ── LETTER ── -->
+<div id="letter-screen">
+  <div class="letter-paper" id="letter-paper">
+    <!-- populated by JS -->
+  </div>
+  <div class="response-wrap">
+    <button class="btn-accept" onclick="respond('accepted')">✓ I Accept the Invitation</button>
+    <button class="btn-decline" onclick="respond('declined')">I am unable to attend</button>
+  </div>
+</div>
+
+<!-- ── CONFIRMATION ── -->
+<div id="confirm-screen">
+  <div class="confirm-icon" id="confirm-icon">🎓</div>
+  <h2 class="confirm-title" id="confirm-title">Thank You!</h2>
+  <p class="confirm-sub" id="confirm-sub"></p>
+  <div class="trivium-footer" style="margin-top:2rem">LOGIC · GRAMMAR · RHETORIC</div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+// ── FIREBASE CONFIG ────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyAiwhJBLgR2PXGTefJIOmY0RDaAaBXkBm0",
+  authDomain:        "marquisteacher-academy.firebaseapp.com",
+  projectId:         "marquisteacher-academy",
+  storageBucket:     "marquisteacher-academy.firebasestorage.app",
+  messagingSenderId: "750118192079",
+  appId:             "1:750118192079:web:1ec61b17dbc246900788ba"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── GUEST DATA ─────────────────────────────────────────────────
+const GUESTS = {
+ 'TEST-TT2026': {
+  name:     'Guest',
+  fullName: 'Test Guest',
+  role:     'The Trivium Tour — Test Invitation',
+  theme:    'The Art of Meaningful Conversation',
+  logic:    'How do we think about what makes a conversation worth having?',
+  grammar:  'What do we need to understand about dialogue and exchange?',
+  rhetoric: 'When does conversation become something that genuinely changes people?',
+  body:     'This is a test invitation to preview the Trivium Tour experience. Everything you see here reflects the quality and care that goes into each personalised guest invitation.',
+  email:    ''
+  },  
+  'TAVIE-TT2026': {
+    name:     'Tavie',
+    fullName: 'English With Tavie',
+    role:     'The Emerging Educator • English Teacher • IELTS Tutor • Micro-Podcaster',
+    theme:    'Finding Your Voice: From Learning English to Communicating with Confidence',
+    logic:    'How do we think differently in a new language?',
+    grammar:  'What do learners truly need to understand about language?',
+    rhetoric: 'When does learning English become a journey toward confidence and finding your voice?',
+    body:     'Your work as an English educator, IELTS tutor, and modern language-learning creator offers a particularly meaningful perspective for this conversation. Through your work with adult and young learners, your focus on fluency, communication, and travel English, and your use of micro-podcasting and both online and face-to-face teaching, you represent an emerging generation of educators who are helping learners use language not simply as a subject, but as a tool for connection and confidence.',
+    email:    ''
+  },
+  'BOB-TT2026': {
+    name:     'Bob',
+    fullName: 'Bob Nguyen',
+    role:     'The Teacher Educator • English Language Teacher • Teacher Support & Training • Online Educator',
+    theme:    'The Teacher Behind the Teacher: Rethinking How We Educate Educators',
+    logic:    'How do we think about what makes an effective teacher?',
+    grammar:  'What knowledge and skills must educators develop to grow?',
+    rhetoric: 'How do teachers communicate, inspire, and ultimately shape the next generation?',
+    body:     'Your work presents a particularly meaningful perspective for this conversation. As an English language teacher, educator, supporter and trainer of teachers, and online educator, your experience allows us to explore education from a perspective that is often overlooked: the person responsible for helping the teacher become a better teacher. At the heart of our conversation is a question that deserves greater attention: Who teaches the teacher?',
+    email:    ''
+  },
+  'IDRIS-TT2026': {
+    name:     'Idris',
+    fullName: 'Idris Albayrak',
+    role:     'The Futurist • Space Entrepreneur • STEMist • Activist • Mentor',
+    theme:    'From Earth to the Stars: Why We Must Educate the Human of Tomorrow',
+    logic:    'How do we reason about the future and what humanity may be getting wrong?',
+    grammar:  'What knowledge and skills do children need to understand the world they are entering?',
+    rhetoric: 'How do we inspire young people to imagine themselves as active participants in shaping the future?',
+    body:     'Your work as the founder of ALBA Space, your writing of T\u00fcrkiye\'s first child space encyclopedia, and your involvement in STEM, futurism, mentoring, space-focused initiatives, and educational programs represent a compelling bridge between education and humanity\'s future. The central question becomes: How do we educate the human of tomorrow?',
+    email:    ''
+  },
+  'MEHDI-TT2026': {
+    name:     'Mehdi',
+    fullName: 'Mehdi Seyedinasab',
+    role:     'The Experienced ELT Professional • IELTS & TOEFL Educator • CELTA & TESOL Certified',
+    theme:    'Beyond the Score: What Does an English Exam Really Measure?',
+    logic:    'Do standardized English exams genuinely measure someone\'s ability to communicate?',
+    grammar:  'What separates simply passing an examination from genuinely functioning in English?',
+    rhetoric: 'How do educators help students understand that a score is a measurement — not a definition of their identity?',
+    body:     'Your nearly two decades of experience in the ELT industry, your teaching experience across Iran and T\u00fcrkiye, your CELTA and TESOL certifications, and your work with thousands of IELTS and TOEFL learners provide an extraordinary perspective. Your experience sits at the intersection of language learning, assessment, opportunity, migration, and the real-world goals that bring so many students to English in the first place.',
+    email:    ''
+  }
+};
+
+let currentGuest = null;
+let currentCode  = null;
+
+// ── VALIDATE CODE ──────────────────────────────────────────────
+window.validateCode = function() {
+  var input = document.getElementById('code-input').value.trim().toUpperCase();
+  var errEl = document.getElementById('code-error');
+
+  if (!input) {
+    errEl.textContent = 'Please enter your invitation code.';
+    return;
+  }
+
+  if (!GUESTS[input]) {
+    errEl.textContent = 'Code not recognised. Please check your invitation email.';
+    return;
+  }
+
+  currentCode  = input;
+  currentGuest = GUESTS[input];
+  errEl.textContent = '';
+
+  document.getElementById('code-screen').style.display    = 'none';
+  document.getElementById('envelope-screen').style.display = 'block';
+};
+
+// ── OPEN ENVELOPE ──────────────────────────────────────────────
+var envelopeOpened = false;
+
+window.openEnvelope = function() {
+  if (envelopeOpened) return;
+  envelopeOpened = true;
+
+  document.getElementById('wax-seal').classList.add('cracked');
+  document.getElementById('env-flap').classList.add('open');
+  document.getElementById('letter-peek').classList.add('show');
+  document.getElementById('env-hint').textContent = 'Your letter is ready...';
+
+  setTimeout(function() {
+    document.getElementById('envelope-screen').style.display = 'none';
+    document.getElementById('letter-screen').style.display   = 'block';
+    renderLetter();
+  }, 1600);
+};
+
+// ── RENDER LETTER ──────────────────────────────────────────────
+function renderLetter() {
+  var g = currentGuest;
+  document.getElementById('letter-paper').innerHTML = `
+    <div class="letter-header">
+      <div class="letter-academy">Marquis Teacher Academy</div>
+      <div class="letter-tour">The Trivium Tour</div>
+      <div class="letter-trivium">LOGIC &middot; GRAMMAR &middot; RHETORIC</div>
+      <div class="letter-guest-name">${g.fullName}</div>
+      <div class="letter-guest-role">${g.role}</div>
+    </div>
+
+    <div class="letter-theme">
+      <div class="letter-theme-label">Proposed Conversation Theme</div>
+      <div class="letter-theme-text">${g.theme}</div>
+    </div>
+
+    <p class="letter-body">
+      Dear ${g.name},<br><br>
+      Thank you for considering the invitation to join the MarquisTeacher Trivium Tour.
+      I am truly honoured to feature educators, innovators, entrepreneurs, researchers, and leaders
+      whose work inspires meaningful conversations about learning, language, technology, and the
+      future of education.<br><br>
+      ${g.body}
+    </p>
+
+    <div class="letter-trivium-flow">
+      <div class="trivium-step">
+        <div class="trivium-step-label">Logic</div>
+        <div class="trivium-step-text">${g.logic}</div>
+      </div>
+      <div class="trivium-step">
+        <div class="trivium-step-label">Grammar</div>
+        <div class="trivium-step-text">${g.grammar}</div>
+      </div>
+      <div class="trivium-step">
+        <div class="trivium-step-label">Rhetoric</div>
+        <div class="trivium-step-text">${g.rhetoric}</div>
+      </div>
+    </div>
+
+    <p class="letter-closing">
+      I am absolutely excited to have you with us and look forward to an inspiring
+      conversation if you so choose to accept.
+    </p>
+
+    <div class="letter-signature">
+      <div class="letter-sig-name">Truly, MarquisTeacher</div>
+      <div class="letter-sig-title">Founder, MarquisTeacher Academy</div>
+    </div>
+  `;
+}
+
+// ── RESPOND ───────────────────────────────────────────────────
+window.respond = async function(response) {
+  try {
+    await setDoc(doc(db, 'triviumInvitations', currentCode), {
+      guest:     currentGuest.fullName,
+      code:      currentCode,
+      response:  response,
+      theme:     currentGuest.theme,
+      timestamp: new Date().toISOString()
+    });
+
+    // Notify backend to send confirmation email
+    await fetch('https://marquisteacher-backend.onrender.com/api/contact', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        name:    currentGuest.fullName,
+        email:   'MarquisTeacher@gmail.com',
+        subject: `Trivium Tour Response: ${currentGuest.name} has ${response}`,
+        message: `${currentGuest.fullName} (${currentCode}) has ${response} the Trivium Tour invitation.\n\nTheme: ${currentGuest.theme}`
+      })
+    });
+
+  } catch(e) {
+    console.error('Firebase error:', e);
+  }
+
+  document.getElementById('letter-screen').style.display  = 'none';
+  document.getElementById('confirm-screen').style.display = 'block';
+
+  if (response === 'accepted') {
+    document.getElementById('confirm-icon').textContent  = '🎓';
+    document.getElementById('confirm-title').textContent = 'Welcome to the Tour!';
+    document.getElementById('confirm-sub').innerHTML =
+      `Thank you, ${currentGuest.name}. Your acceptance has been received.<br><br>
+      MarquisTeacher will be in touch shortly with the next steps for your Trivium Tour conversation.<br><br>
+      <em style="color:rgba(240,236,228,0.4);font-size:0.8rem">Logic &middot; Grammar &middot; Rhetoric</em>`;
+  } else {
+    document.getElementById('confirm-icon').textContent  = '🙏';
+    document.getElementById('confirm-title').textContent = 'Thank You';
+    document.getElementById('confirm-sub').innerHTML =
+      `Thank you for your response, ${currentGuest.name}.<br><br>
+      We completely understand and hope our paths cross in the future.<br><br>
+      The door to the Trivium Tour remains open.<br><br>
+      <em style="color:rgba(240,236,228,0.4);font-size:0.8rem">— Truly, MarquisTeacher</em>`;
+  }
+};
+</script>
+</body>
+</html>
