@@ -535,6 +535,77 @@
   </div>
 </div>
 
+<!-- ── INTEREST FORM ── -->
+<div id="interest-screen" style="display:none;width:100%;max-width:580px;animation:letterRise 0.8s ease both">
+
+  <div class="letter-paper">
+    <div class="letter-header">
+      <div class="letter-academy">Marquis Teacher Academy</div>
+      <div class="letter-tour">The Trivium Tour</div>
+      <div class="letter-trivium">LOGIC &middot; GRAMMAR &middot; RHETORIC</div>
+    </div>
+
+    <p class="letter-body">
+      The MarquisTeacher Trivium Tour is a live educational interview series that brings together
+      educators, innovators, entrepreneurs, artists, researchers, and forward thinking enthusiasts
+      from around the world to explore ideas that shape learning and human potential.<br><br>
+      Inspired by the classical Trivium — Logic, Grammar, and Rhetoric — each conversation
+      encourages critical thinking, meaningful dialogue, and practical wisdom for the viewers
+      and those in attendance.<br><br>
+      Rather than simply interviewing guests, the Trivium Tour creates a space where ideas are
+      examined, challenged, and transformed into inspiration for learners, teachers, and future leaders.<br><br>
+      If this resonates with you, we would love to know more about who you are.
+    </p>
+
+    <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:#c9a84c;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.5rem">
+      Express Your Interest
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1rem">
+
+      <div>
+        <label style="display:block;font-family:'Space Mono',monospace;font-size:0.6rem;color:#6b7280;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">Full Name</label>
+        <input id="int-name" type="text" placeholder="Your full name"
+          style="width:100%;background:#f5f0e8;border:1px solid #e5ddd0;border-radius:8px;padding:0.75rem 1rem;color:#1a1a2e;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none">
+      </div>
+
+      <div>
+        <label style="display:block;font-family:'Space Mono',monospace;font-size:0.6rem;color:#6b7280;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">Line of Work / Expertise</label>
+        <input id="int-work" type="text" placeholder="e.g. Educator, Entrepreneur, Researcher"
+          style="width:100%;background:#f5f0e8;border:1px solid #e5ddd0;border-radius:8px;padding:0.75rem 1rem;color:#1a1a2e;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none">
+      </div>
+
+      <div>
+        <label style="display:block;font-family:'Space Mono',monospace;font-size:0.6rem;color:#6b7280;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">Instagram or LinkedIn</label>
+        <input id="int-social" type="text" placeholder="@handle or linkedin.com/in/yourname"
+          style="width:100%;background:#f5f0e8;border:1px solid #e5ddd0;border-radius:8px;padding:0.75rem 1rem;color:#1a1a2e;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none">
+      </div>
+
+      <div>
+        <label style="display:block;font-family:'Space Mono',monospace;font-size:0.6rem;color:#6b7280;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">Email Address</label>
+        <input id="int-email" type="email" placeholder="you@example.com"
+          style="width:100%;background:#f5f0e8;border:1px solid #e5ddd0;border-radius:8px;padding:0.75rem 1rem;color:#1a1a2e;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none">
+      </div>
+
+      <div>
+        <label style="display:block;font-family:'Space Mono',monospace;font-size:0.6rem;color:#6b7280;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem">What would you hope to contribute to or gain from this conversation?</label>
+        <textarea id="int-gain" rows="4" placeholder="Share your thoughts..."
+          style="width:100%;background:#f5f0e8;border:1px solid #e5ddd0;border-radius:8px;padding:0.75rem 1rem;color:#1a1a2e;font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;resize:vertical;line-height:1.6"></textarea>
+      </div>
+
+    </div>
+
+    <div id="int-error" style="color:#e74c3c;font-size:0.82rem;margin-top:0.75rem;min-height:1rem"></div>
+
+    <button onclick="submitInterest()"
+      style="width:100%;margin-top:1.25rem;padding:1rem;background:#1a1a2e;color:#c9a84c;border:none;border-radius:10px;font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:0.02em;transition:all 0.2s"
+      id="int-submit-btn">
+      Submit My Interest →
+    </button>
+
+  </div>
+</div>
+
 <!-- ── CONFIRMATION ── -->
 <div id="confirm-screen">
   <div class="confirm-icon" id="confirm-icon">🎓</div>
@@ -562,17 +633,6 @@ const db  = getFirestore(app);
 
 // ── GUEST DATA ─────────────────────────────────────────────────
 const GUESTS = {
- 'TEST-TT2026': {
-  name:     'Guest',
-  fullName: 'Test Guest',
-  role:     'The Trivium Tour — Test Invitation',
-  theme:    'The Art of Meaningful Conversation',
-  logic:    'How do we think about what makes a conversation worth having?',
-  grammar:  'What do we need to understand about dialogue and exchange?',
-  rhetoric: 'When does conversation become something that genuinely changes people?',
-  body:     'This is a test invitation to preview the Trivium Tour experience. Everything you see here reflects the quality and care that goes into each personalised guest invitation.',
-  email:    ''
-  },  
   'TAVIE-TT2026': {
     name:     'Tavie',
     fullName: 'English With Tavie',
@@ -616,6 +676,9 @@ const GUESTS = {
     rhetoric: 'How do educators help students understand that a score is a measurement — not a definition of their identity?',
     body:     'Your nearly two decades of experience in the ELT industry, your teaching experience across Iran and T\u00fcrkiye, your CELTA and TESOL certifications, and your work with thousands of IELTS and TOEFL learners provide an extraordinary perspective. Your experience sits at the intersection of language learning, assessment, opportunity, migration, and the real-world goals that bring so many students to English in the first place.',
     email:    ''
+  },
+  'TRIVIUM-0110': {
+    type: 'interest'
   }
 };
 
@@ -641,7 +704,7 @@ window.validateCode = function() {
   currentGuest = GUESTS[input];
   errEl.textContent = '';
 
-  document.getElementById('code-screen').style.display    = 'none';
+  document.getElementById('code-screen').style.display     = 'none';
   document.getElementById('envelope-screen').style.display = 'block';
 };
 
@@ -659,8 +722,12 @@ window.openEnvelope = function() {
 
   setTimeout(function() {
     document.getElementById('envelope-screen').style.display = 'none';
-    document.getElementById('letter-screen').style.display   = 'block';
-    renderLetter();
+    if (currentGuest.type === 'interest') {
+      document.getElementById('interest-screen').style.display = 'block';
+    } else {
+      document.getElementById('letter-screen').style.display = 'block';
+      renderLetter();
+    }
   }, 1600);
 };
 
@@ -764,6 +831,59 @@ window.respond = async function(response) {
       <em style="color:rgba(240,236,228,0.4);font-size:0.8rem">— Truly, MarquisTeacher</em>`;
   }
 };
+
+// ── SUBMIT INTEREST ───────────────────────────────────────────
+window.submitInterest = async function() {
+  var name   = document.getElementById('int-name').value.trim();
+  var work   = document.getElementById('int-work').value.trim();
+  var social = document.getElementById('int-social').value.trim();
+  var email  = document.getElementById('int-email').value.trim();
+  var gain   = document.getElementById('int-gain').value.trim();
+  var errEl  = document.getElementById('int-error');
+  var btnEl  = document.getElementById('int-submit-btn');
+
+  errEl.textContent = '';
+
+  if (!name || !work || !email || !gain) {
+    errEl.textContent = 'Please fill in all required fields.';
+    return;
+  }
+
+  btnEl.textContent = 'Submitting...';
+  btnEl.disabled    = true;
+
+  try {
+    await setDoc(doc(db, 'triviumInterest', email.replace(/[^a-zA-Z0-9]/g, '_')), {
+      name, work, social, email, gain,
+      code:      'TRIVIUM-0110',
+      timestamp: new Date().toISOString()
+    });
+
+    await fetch('https://marquisteacher-backend.onrender.com/api/contact', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        name:    name,
+        email:   'MarquisTeacher@gmail.com',
+        subject: 'Trivium Tour Interest: ' + name,
+        message: 'Name: ' + name + '\nWork: ' + work + '\nSocial: ' + social + '\nEmail: ' + email + '\n\nWhat they hope to contribute or gain:\n' + gain
+      })
+    });
+  } catch(e) {
+    console.error('Submit error:', e);
+  }
+
+  document.getElementById('interest-screen').style.display = 'none';
+  document.getElementById('confirm-screen').style.display  = 'block';
+
+  document.getElementById('confirm-icon').textContent  = '\uD83C\uDF93';
+  document.getElementById('confirm-title').textContent = 'Thank You!';
+  document.getElementById('confirm-sub').innerHTML =
+    'Thank you, ' + name + '. Your interest has been received.<br><br>'
+    + 'MarquisTeacher will review your submission and be in touch if there is a meaningful conversation to be had.<br><br>'
+    + '<em style="color:rgba(240,236,228,0.4);font-size:0.8rem">Logic &middot; Grammar &middot; Rhetoric</em>';
+};
+
 </script>
 </body>
 </html>
